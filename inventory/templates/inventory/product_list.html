@@ -1,0 +1,66 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}Products - Inventory{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Products</h2>
+    <a href="{% url 'product_create' %}" class="btn btn-primary">+ Add Product</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-6">
+        <input type="text" name="q" value="{{ search }}" class="form-control" placeholder="Search by name or SKU...">
+    </div>
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            <option value="">All categories</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">Filter</button>
+    </div>
+</form>
+
+<div class="card">
+    <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th class="text-end">Price</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-center">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.category.name|default:"-" }}</td>
+                    <td class="text-end">₹{{ product.price }}</td>
+                    <td class="text-center">{{ product.quantity }}</td>
+                    <td class="text-center">
+                        {% if product.is_low_stock %}
+                            <span class="badge text-bg-danger">Low Stock</span>
+                        {% else %}
+                            <span class="badge text-bg-success">In Stock</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No products found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
