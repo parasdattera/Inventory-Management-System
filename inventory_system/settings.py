@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@y&#h%uqo-__ig7f0$@=nc9ux+*#!^i%_9wl!xyod_qv(49ok4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["inventory-management-system-d7bdlvf6w-paras-dattera-team.vercel.app"]
 
 
 # Application definition
